@@ -22,9 +22,17 @@ java {
 }
 
 application {
-    mainClass = 'cicd_pipeline.App' // passe an deinen Paketnamen an
+    mainClass = 'cicd.App' // passe an deinen Paketnamen an
 }
 
 tasks.named('test') {
     useJUnit() // JUnit 4 statt JUnit Platform
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'cicd.App'
+        )
+    }
 }

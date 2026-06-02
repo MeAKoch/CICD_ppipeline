@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     stages {
@@ -12,20 +11,26 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'chmod +x gradlew'
-                sh './gradlew clean build'
+                dir('cicd/app') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean build'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh './gradlew test'
+                dir('cicd/app') {
+                    sh './gradlew test'
+                }
             }
         }
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t cicd-app .'
+                dir('cicd/app') {
+                    sh 'docker build -t cicd-app .'
+                }
             }
         }
 

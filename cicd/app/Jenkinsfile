@@ -1,0 +1,38 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Source') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat '.\\gradlew.bat clean build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat '.\\gradlew.bat test'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t cicd-app .'
+            }
+        }
+
+        stage('Run') {
+            steps {
+                bat 'docker rm -f cicd-app || exit 0'
+                bat 'docker run -d --name cicd-app cicd-app'
+            }
+        }
+    }
+}
